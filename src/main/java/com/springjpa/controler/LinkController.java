@@ -19,12 +19,12 @@ public class LinkController {
 	
 	@RequestMapping("/save")
 	public String process(){
-		/*repository.save(new ContentLink("Jack", "Smith"));
+		repository.save(new ContentLink("Jack", "Smith"));
 		repository.save(new ContentLink("Adam", "Johnson"));
 		repository.save(new ContentLink("Kim", "Smith"));
 		repository.save(new ContentLink("David", "Williams"));
-		repository.save(new ContentLink("Peter", "Davis")); */
-		//userRepo.save(new Korisnik("elza", "098f6bcd4621d373cade4e832627b4f6", "elzaa_95@hotmail.com"));
+		repository.save(new ContentLink("Peter", "Davis")); 
+		userRepo.save(new Korisnik("elza", "098f6bcd4621d373cade4e832627b4f6", "elzaa_95@hotmail.com"));
 		return "Done";
 	}
 	
