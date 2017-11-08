@@ -23,11 +23,13 @@ public class Korisnik implements Serializable {
     @Column(name="password_hash")
     private String password;
     private String email;
+    private String ime;
     
-   public Korisnik(String username, String hashPass, String email) {
+   public Korisnik(String username, String hashPass, String email, String name) {
 	   this.username = username;
 	   this.password = hashPass;
 	   this.email = email;
+	   this.ime = name;
    } 
 	public Korisnik() {
     	
@@ -60,6 +62,12 @@ public class Korisnik implements Serializable {
 		return idKorisnika;
 	}
 	
+	public String getName() {
+		return ime;
+	}
+	public void setName(String name) {
+		this.ime = name;
+	}
 	@Override
     public String toString() {
         return String.format("Korisnik[id=%d, username='%s', email='%s']", idKorisnika, username, email);

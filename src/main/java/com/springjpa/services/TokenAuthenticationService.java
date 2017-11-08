@@ -25,8 +25,6 @@ public class TokenAuthenticationService {
 
     
 	private static KorisnikRepository korisnikRepository;
-    private static KorisnikService korisnikServis;
-
     static final long EXPIRATIONTIME = 864_000_000; // 10 days
     static final String SECRET = "ThisIsASecret";
     static final String TOKEN_PREFIX = "Bearer";
@@ -46,7 +44,7 @@ public class TokenAuthenticationService {
         ServletContext servletContext = request.getServletContext();
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         korisnikRepository = webApplicationContext.getBean(KorisnikRepository.class);
-        korisnikServis = webApplicationContext.getBean(KorisnikService.class);
+        webApplicationContext.getBean(KorisnikService.class);
         
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {

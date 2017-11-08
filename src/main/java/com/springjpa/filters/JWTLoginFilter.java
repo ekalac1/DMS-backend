@@ -2,7 +2,6 @@ package com.springjpa.filters;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springjpa.repository.KorisnikRepository;
 import com.springjpa.services.TokenAuthenticationService;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,10 +23,7 @@ import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
    
-	//@Autowired
-    private KorisnikRepository korisnikRepository;
-
-    public JWTLoginFilter(String url, AuthenticationManager authManager) {
+	public JWTLoginFilter(String url, AuthenticationManager authManager) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authManager);
     }
