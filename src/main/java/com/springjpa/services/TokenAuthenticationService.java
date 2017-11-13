@@ -16,7 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.springjpa.model.Korisnik;
-import com.springjpa.repository.KorisnikRepository;
+import com.springjpa.repository.UserRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,7 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class TokenAuthenticationService {
 
     
-	private static KorisnikRepository korisnikRepository;
+	private static UserRepository korisnikRepository;
     static final long EXPIRATIONTIME = 864_000_000; // 10 days
     static final String SECRET = "ThisIsASecret";
     static final String TOKEN_PREFIX = "Bearer";
@@ -43,7 +43,7 @@ public class TokenAuthenticationService {
 
         ServletContext servletContext = request.getServletContext();
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-        korisnikRepository = webApplicationContext.getBean(KorisnikRepository.class);
+        korisnikRepository = webApplicationContext.getBean(UserRepository.class);
         webApplicationContext.getBean(KorisnikService.class);
         
         String token = request.getHeader(HEADER_STRING);

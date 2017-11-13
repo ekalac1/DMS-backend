@@ -16,7 +16,7 @@ import com.springjpa.services.KorisnikService;
 @RestController
 @CrossOrigin
 @RequestMapping(path="/korisnici")
-public class KorisnikController {
+public class UserController {
 	
 	@Autowired
     private KorisnikService korisnikService;

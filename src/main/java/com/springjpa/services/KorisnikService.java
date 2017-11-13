@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.springjpa.model.Korisnik;
-import com.springjpa.repository.KorisnikRepository;
+import com.springjpa.repository.UserRepository;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -32,7 +32,7 @@ public class KorisnikService implements UserDetailsService{
 	private final static int PAGESIZE = 3;
 	
     @Autowired
-    KorisnikRepository repository;
+    UserRepository repository;
 
     public Iterable<Korisnik> findAllKorisnici() {
         return repository.findAll();

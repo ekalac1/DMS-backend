@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.springjpa.model.Korisnik;
 
 @Repository
-public interface KorisnikRepository extends PagingAndSortingRepository<Korisnik, Integer> {
+public interface UserRepository extends PagingAndSortingRepository<Korisnik, Integer> {
 	
 	public Korisnik findByEmail(String email);
 	public Korisnik findByIdKorisnika(Integer id);
