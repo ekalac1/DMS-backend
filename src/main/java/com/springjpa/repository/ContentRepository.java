@@ -12,5 +12,5 @@ import com.springjpa.model.Korisnik;
 public interface ContentRepository extends PagingAndSortingRepository<Content, Integer> {
 
 	public List<Content> findAll();
-	public List<Content> findByOwner(Korisnik owner);
+	public List<Content> findByOwnerOrderByIdDesc(Korisnik owner);
 }

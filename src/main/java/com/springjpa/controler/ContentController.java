@@ -46,10 +46,15 @@ public class ContentController {
 		if (owner==null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
 		
-		List<Content> list = contentRepo.findByOwner(owner);
+		
+		List<Content> list = contentRepo.findByOwnerOrderByIdDesc(owner);
 		
 		for (Content c : list)
 			c.setContent(null);
+		
+		if (list.size()==0)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Jos uvijek niste dodali nijedan fajl");
+		
 				
 		return ResponseEntity.ok(list);
 	}
