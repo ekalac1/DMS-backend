@@ -70,6 +70,8 @@ public class KorisnikService implements UserDetailsService{
     	else if (korisnik.getEmail()=="")
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Morate unijeti email");
         
+        korisnik.setRole(Korisnik.roleUser);
+        
         korisnik.setPassword(toMD5(korisnik.getPassword()));
         Korisnik kreiranKorisnik = repository.save(korisnik);
 

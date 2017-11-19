@@ -22,7 +22,7 @@ public class UserController {
     private KorisnikService korisnikService;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody Korisnik korisnik)
+    public ResponseEntity<Object> register(@RequestBody Korisnik korisnik)
     {
     	if (korisnik==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nemoguce kreirati praznog korisnika");
         try {

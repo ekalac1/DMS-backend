@@ -11,6 +11,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name="korisnik")
 public class Korisnik implements Serializable {
+	
+	public static final String roleAdmin = "ROLE_ADMIN";
+	public static final String roleUser = "ROLE_USER";
 	private static final long serialVersionUID = 1L;
 
     @Id
@@ -24,17 +27,26 @@ public class Korisnik implements Serializable {
     private String password;
     private String email;
     private String ime;
+    private String role;
     
-   public Korisnik(String username, String hashPass, String email, String name) {
+   public Korisnik(String username, String hashPass, String email, String name, String role) {
 	   this.username = username;
 	   this.password = hashPass;
 	   this.email = email;
 	   this.ime = name;
+	   this.role = role;
    } 
 	public Korisnik() {
     	
     }
-    
+	
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	public void setIdKorisnika(Integer idKorisnika) {
 		this.idKorisnika = idKorisnika;
 	}
