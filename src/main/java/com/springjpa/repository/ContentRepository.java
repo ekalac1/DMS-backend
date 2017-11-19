@@ -13,4 +13,5 @@ public interface ContentRepository extends PagingAndSortingRepository<Content, I
 
 	public List<Content> findAll();
 	public List<Content> findByOwnerOrderByIdDesc(Korisnik owner);
+	public Content findById(int id);
 }

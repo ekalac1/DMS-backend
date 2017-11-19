@@ -56,11 +56,8 @@ public class KorisnikService implements UserDetailsService{
     	return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
  
-    public ResponseEntity registerKorisnik(Korisnik korisnik) {
-    	
-    	// Registracija nije implementirana do kraja
-
-       
+    public ResponseEntity<Object> registerKorisnik(Korisnik korisnik) {
+     
         if (korisnik.getUsername()=="")
     		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username ne može biti prazno");
     	else if (repository.findByUsername(korisnik.getUsername())!=null)

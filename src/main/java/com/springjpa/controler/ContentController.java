@@ -1,5 +1,6 @@
 package com.springjpa.controler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class ContentController {
 		if (owner==null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
 		
+
 		Content c = new Content(content.getFileName(), content.getDatatype(), owner, content.getContent());
 		contentRepo.save(c);
 		return ResponseEntity.ok("Done");
@@ -46,8 +48,31 @@ public class ContentController {
 		if (owner==null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
 		
-		
 		List<Content> list = contentRepo.findByOwnerOrderByIdDesc(owner);
+
+		for (Content c : list)
+			c.setContent(null);
+		
+		if (list.size()==0)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Jos uvijek niste dodali nijedan fajl");
+		
+				
+		return ResponseEntity.ok(list);
+	}
+	
+	@RequestMapping(value = "workspace", method = RequestMethod.GET)
+	public ResponseEntity<Object> getWorkSpaceByUser(@RequestParam(name = "user") String username){
+		
+		Korisnik owner = userRepo.findByUsername(username);
+		if (owner==null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
+		
+		List<Content> list = new ArrayList<Content>();
+		if (owner.getRole().equals(Korisnik.roleAdmin)){
+			list = contentRepo.findAll();
+		} else {
+			list = contentRepo.findByOwnerOrderByIdDesc(owner);
+		}
 		
 		for (Content c : list)
 			c.setContent(null);
@@ -58,4 +83,40 @@ public class ContentController {
 				
 		return ResponseEntity.ok(list);
 	}
+	
+	@RequestMapping(value = "workspace", method = RequestMethod.DELETE)
+	public ResponseEntity<Object> getWorkSpaceByUser(@RequestParam(name = "user") String username, @RequestParam(name = "document") int document_id){
+		
+		Korisnik owner = userRepo.findByUsername(username);
+		if (owner==null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
+		
+		Content content = contentRepo.findOne(document_id);
+		if (content == null) 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown document");
+		
+		contentRepo.delete(document_id);
+	
+		return ResponseEntity.ok(contentRepo.findOne(document_id)==null);
+	}
+	
+	@RequestMapping(value = "workspace", method = RequestMethod.PUT)
+	public ResponseEntity<Object> getRenameDocument(@RequestParam(name = "user") String username, 
+			@RequestParam(name = "document") int document_id,
+			@RequestParam(name = "name") String document_name){
+		
+		Korisnik owner = userRepo.findByUsername(username);
+		if (owner==null)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
+		
+		Content content = contentRepo.findOne(document_id);
+		if (content == null) 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown document");
+		
+		content.setFileName(document_name);
+		contentRepo.save(content);
+	
+		return ResponseEntity.ok("Promjenili ste ime dokumenta");
+	}
+	
 }

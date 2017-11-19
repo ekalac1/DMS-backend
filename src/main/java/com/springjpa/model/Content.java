@@ -17,7 +17,7 @@ public class Content implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private int id;
  
 	private String fileName;
 	private String datatype;
@@ -36,14 +36,6 @@ public class Content implements Serializable {
 		this.datatype = datatype;
 		this.owner = owner;
 		this.content = content;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getFileName() {
@@ -76,5 +68,13 @@ public class Content implements Serializable {
 
 	public void setContent(char[] content) {
 		this.content = content;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
