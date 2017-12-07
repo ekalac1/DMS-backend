@@ -18,7 +18,6 @@ import com.springjpa.model.Korisnik;
 import com.springjpa.repository.ContentRepository;
 import com.springjpa.repository.UserRepository;
 
-
 @RestController
 @RequestMapping(path="/content")
 public class ContentController {
@@ -35,7 +34,6 @@ public class ContentController {
 		if (owner==null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
 		
-
 		Content c = new Content(content.getFileName(), content.getDatatype(), owner, content.getContent());
 		contentRepo.save(c);
 		return ResponseEntity.ok("Done");
@@ -86,32 +84,35 @@ public class ContentController {
 	
 	@RequestMapping(value = "workspace", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> getWorkSpaceByUser(@RequestParam(name = "user") String username, @RequestParam(name = "document") int document_id){
-		
+	
 		Korisnik owner = userRepo.findByUsername(username);
-		if (owner==null)
+		if (owner==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
-		
+		}
+			
 		Content content = contentRepo.findOne(document_id);
-		if (content == null) 
+		if (content == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown document");
+		}
 		
 		contentRepo.delete(document_id);
-	
 		return ResponseEntity.ok(contentRepo.findOne(document_id)==null);
 	}
 	
-	@RequestMapping(value = "workspace", method = RequestMethod.PUT)
+	@RequestMapping(value = "workspace", method = RequestMethod.POST)
 	public ResponseEntity<Object> getRenameDocument(@RequestParam(name = "user") String username, 
 			@RequestParam(name = "document") int document_id,
 			@RequestParam(name = "name") String document_name){
 		
 		Korisnik owner = userRepo.findByUsername(username);
-		if (owner==null)
+		if (owner==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
-		
+		}
+			
 		Content content = contentRepo.findOne(document_id);
-		if (content == null) 
+		if (content == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown document");
+		}
 		
 		content.setFileName(document_name);
 		contentRepo.save(content);
@@ -119,4 +120,15 @@ public class ContentController {
 		return ResponseEntity.ok("Promjenili ste ime dokumenta");
 	}
 	
+	@RequestMapping(value = "show", method = RequestMethod.GET)
+	public ResponseEntity<Object> getContentById(@RequestParam(name = "id") int contentId){
+		
+		Content content = contentRepo.findById(contentId);
+		if ( content == null ){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown document");
+		}
+				
+		return ResponseEntity.ok(content);
+	}
+
 }
