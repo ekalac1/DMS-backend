@@ -15,7 +15,9 @@ import javax.persistence.Table;
 @Table(name = "shareddocument")
 public class SharedDocument implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	public static final String editShare = "EDIT";
+	public static final String viewShare = "VIEW";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
@@ -29,12 +31,15 @@ public class SharedDocument implements Serializable {
 	@JoinColumn(name="idDokumenta")
     private Content document;
 	
+	private String type;
+	
 	public SharedDocument() {}
 	
-	public SharedDocument(Korisnik owner, Content document) {
+	public SharedDocument(Korisnik owner, Content document, String type) {
 		super();
 		this.owner = owner;
 		this.document = document;
+		this.type = type;
 	}
 
 	public Korisnik getOwner() {
@@ -60,5 +65,12 @@ public class SharedDocument implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
 }

@@ -44,6 +44,30 @@ public class ContentController {
 		return ResponseEntity.ok("Done");
 	}
 	
+	@RequestMapping(value = "/sharedocument", method = RequestMethod.POST)
+	public ResponseEntity<String> saveShare(@RequestParam(name = "user") int user_id, 
+			@RequestParam(name = "document") int document_id,
+			@RequestParam(name = "type") String type){	
+		
+		List<SharedDocument> myShared = shareRepo.findByOwnerOrderByIdDesc(userRepo.findByIdKorisnika(user_id));
+		int i = 0;
+		for (SharedDocument x : myShared) {
+			if(x.getDocument().getId() == document_id) {
+				i = 1;
+			}
+		}
+		
+		if(i == 0)
+		{
+			SharedDocument d = new SharedDocument(userRepo.findByIdKorisnika(user_id), contentRepo.findByIdDokumenta(document_id), type);
+			shareRepo.save(d);
+			return ResponseEntity.ok("Done");
+		}
+		else {
+			return ResponseEntity.ok("Already Exists");
+		}
+	}
+	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<Object> getContentByUser(@RequestParam(name = "user") String username){
 		
