@@ -12,48 +12,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "content")
-public class Content implements Serializable {
+@Table(name = "shareddocument")
+public class SharedDocument implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
-	private int idDokumenta;
- 
-	private String fileName;
-	private String datatype;
+	private int id;
 	
 	@ManyToOne(targetEntity=Korisnik.class)
 	@JoinColumn(name="idKorisnika")
     private Korisnik owner;
 	
-	private char[] content;
+	@ManyToOne(targetEntity=Content.class)
+	@JoinColumn(name="idDokumenta")
+    private Content document;
 	
-	public Content() {}
+	public SharedDocument() {}
 	
-	public Content(String fileName, String datatype, Korisnik owner, char[] content) {
+	public SharedDocument(Korisnik owner, Content document) {
 		super();
-		this.fileName = fileName;
-		this.datatype = datatype;
 		this.owner = owner;
-		this.content = content;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getDatatype() {
-		return datatype;
-	}
-
-	public void setDatatype(String datatype) {
-		this.datatype = datatype;
+		this.document = document;
 	}
 
 	public Korisnik getOwner() {
@@ -63,20 +44,21 @@ public class Content implements Serializable {
 	public void setOwner(Korisnik owner) {
 		this.owner = owner;
 	}
-
-	public char[] getContent() {
-		return content;
+	
+	public Content getDocument() {
+		return document;
 	}
 
-	public void setContent(char[] content) {
-		this.content = content;
+	public void setDocument(Content document) {
+		this.document = document;
 	}
-
+	
 	public int getId() {
-		return idDokumenta;
+		return id;
 	}
 
 	public void setId(int id) {
-		this.idDokumenta = id;
+		this.id = id;
 	}
+
 }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.springjpa.model.Content;
 import com.springjpa.model.ContentDTO;
 import com.springjpa.model.Korisnik;
+import com.springjpa.model.SharedDocument;
 import com.springjpa.repository.ContentRepository;
+import com.springjpa.repository.SharedDocumentRepository;
 import com.springjpa.repository.UserRepository;
 
 @RestController
@@ -26,6 +28,9 @@ public class ContentController {
 	
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	SharedDocumentRepository shareRepo;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ResponseEntity<String> saveContent(@RequestBody ContentDTO content){
@@ -46,7 +51,7 @@ public class ContentController {
 		if (owner==null)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
 		
-		List<Content> list = contentRepo.findByOwnerOrderByIdDesc(owner);
+		List<Content> list = contentRepo.findByOwnerOrderByIdDokumentaDesc(owner);
 
 		for (Content c : list)
 			c.setContent(null);
@@ -66,10 +71,16 @@ public class ContentController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown user");
 		
 		List<Content> list = new ArrayList<Content>();
+		List<SharedDocument> shared = new ArrayList<SharedDocument>();
+		
 		if (owner.getRole().equals(Korisnik.roleAdmin)){
 			list = contentRepo.findAll();
 		} else {
-			list = contentRepo.findByOwnerOrderByIdDesc(owner);
+			//list = contentRepo.findByOwnerOrderByIdDesc(owner);
+			shared = shareRepo.findByOwnerOrderByIdDesc(owner);
+			for (SharedDocument x : shared) {
+				list.add(contentRepo.findByIdDokumenta(x.getDocument().getId()));
+			}
 		}
 		
 		for (Content c : list)
@@ -123,7 +134,7 @@ public class ContentController {
 	@RequestMapping(value = "show", method = RequestMethod.GET)
 	public ResponseEntity<Object> getContentById(@RequestParam(name = "id") int contentId){
 		
-		Content content = contentRepo.findById(contentId);
+		Content content = contentRepo.findByIdDokumenta(contentId);
 		if ( content == null ){
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown document");
 		}
