@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springjpa.model.Korisnik;
+import com.springjpa.repository.UserRepository;
 import com.springjpa.services.KorisnikService;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -20,6 +23,7 @@ public class UserController {
 	
 	@Autowired
     private KorisnikService korisnikService;
+	private UserRepository userRepo;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Object> register(@RequestBody Korisnik korisnik)
@@ -32,8 +36,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                 .body(e.getLocalizedMessage());
         }
-
-
+    }
+	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<Object> getall()
+    {
+    	List<Korisnik> list = userRepo.findAll();
+       
+    	if (list.size()==0)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nema korisnika");
+						
+		return ResponseEntity.ok(list);
     }
 
 }
