@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springjpa.model.Korisnik;
@@ -40,14 +41,19 @@ public class UserController {
     }
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<Object> getall()
+    public ResponseEntity<Object> getall(@RequestParam(name = "user") String username)
     {
     	List<Korisnik> list = userRepo.findAll();
-       
-    	if (list.size()==0)
+    	for(Korisnik a : list){
+    		if(a.getUsername().equalsIgnoreCase(username)) {
+    			list.remove(a);
+    			break;
+    		}
+    	}
+    	       
+    	if (list.size() == 0)
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nema korisnika");
-						
-		return ResponseEntity.ok(list);
+    	else	   						
+    		return ResponseEntity.ok(list);
     }
-
 }
