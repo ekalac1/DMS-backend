@@ -57,8 +57,7 @@ public class ContentController {
 			}
 		}
 		
-		if(i == 0)
-		{
+		if(i == 0) {
 			SharedDocument d = new SharedDocument(userRepo.findByIdKorisnika(user_id), contentRepo.findByIdDokumenta(document_id), type);
 			shareRepo.save(d);
 			return ResponseEntity.ok("Done");

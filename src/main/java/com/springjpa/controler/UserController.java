@@ -23,6 +23,7 @@ public class UserController {
 	
 	@Autowired
     private KorisnikService korisnikService;
+	@Autowired
 	private UserRepository userRepo;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
