@@ -11,5 +11,6 @@ public interface SharedDocumentRepository extends PagingAndSortingRepository<Sha
 
 	public List<SharedDocument> findAll();
 	public List<SharedDocument> findByOwnerOrderByIdDesc(Korisnik owner);
+	public List<SharedDocument> findByDocumentOrderByIdDesc(Content document);
 	public SharedDocument findById(int id);
 }
