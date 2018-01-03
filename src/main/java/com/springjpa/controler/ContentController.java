@@ -50,20 +50,19 @@ public class ContentController {
 			@RequestParam(name = "type") String type){	
 		
 		List<SharedDocument> myShared = shareRepo.findByOwnerOrderByIdDesc(userRepo.findByIdKorisnika(user_id));
-		int i = 0;
 		for (SharedDocument x : myShared) {
 			if(x.getDocument().getId() == document_id) {
-				i = 1;
+				return ResponseEntity.ok("Already Exists");
 			}
 		}
 		
-		if(i == 0) {
+		if(userRepo.existsByIdKorisnika(user_id) && contentRepo.existsByIdDokumenta(document_id)) {
 			SharedDocument d = new SharedDocument(userRepo.findByIdKorisnika(user_id), contentRepo.findByIdDokumenta(document_id), type);
 			shareRepo.save(d);
 			return ResponseEntity.ok("Done");
 		}
 		else {
-			return ResponseEntity.ok("Already Exists");
+			return ResponseEntity.ok("User or document doesn't exist");
 		}
 	}
 	
@@ -127,6 +126,11 @@ public class ContentController {
 		Content content = contentRepo.findOne(document_id);
 		if (content == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unknown document");
+		}
+		
+		List<SharedDocument> lista = shareRepo.findByDocumentOrderByIdDesc(content);
+		for (SharedDocument x : lista) {
+			shareRepo.delete(x.getId());
 		}
 		
 		contentRepo.delete(document_id);
